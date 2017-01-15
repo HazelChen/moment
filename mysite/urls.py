@@ -18,7 +18,9 @@ from django.contrib import admin
 from moment import views as moment_views
 
 urlpatterns = [
-	url(r'^moment/index.html', moment_views.index),
-	url(r'^moment/add_word', moment_views.add_word),
+	url(r'^moment/public.html', moment_views.public),
+	url(r'^moment/add_word_public', moment_views.add_word_public),
+    #url(r'^moment/private.html', moment_views.private),
+    #url(r'^moment/add_word_private', moment_views.add_word_private),
     url(r'^admin/', admin.site.urls),
 ]

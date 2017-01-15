@@ -7,17 +7,25 @@ import  json
 
 logger = logging.getLogger('views')
 
-def index(request):
-	return render(request, 'moment.html', {'word_list': Word.objects.all()})
+def public(request):
+	return render(request, 'moment.html', {'word_list': Word.objects.order_by('-timestamp'), 'mode': 'public'})
 
-def add_word(request):
+def add_word_public(request):
 	body_unicode = request.body.decode('utf-8')
 	body = json.loads(body_unicode)
-	logger.info('json decoded')
 	word_input = body['word']
-	logger.info(word_input)
 	word = Word(room = 'default', word = word_input)
-	logger.info('build word')
 	word.save()
-	logger.info('save word')
+	return HttpResponse()
+
+private_word_list = ['private']
+
+def private(request):
+	return render(request, 'moment.html', {'word_list': private_word_list, 'mode': 'private'})
+
+def add_word_private(request):
+	body_unicode = request.body.decode('utf-8')
+	body = json.loads(body_unicode)
+	word_input = body['word']
+	private_word_list.append(word_input)
 	return HttpResponse()

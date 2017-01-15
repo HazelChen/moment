@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />  
+
 	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static "moment.css" %}">
 	<script type="text/javascript" src="{% static "jquery-3.1.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "moment.js" %}"></script>
     <title>时刻</title>
 </head>
 <body>
-	<input type="text" id="add_word_input" />
-	<button id="add_word_button" onclick="add_word()">submit</button>
-	<!--form id="add_word_form" method="post" onsubmit="return add_word()">
-		{% csrf_token %}
-    	<input type="text" name="word" />
-    	<input type="submit" value="submit">
-	</form-->
-
+	<div class="input-wrapper">
+		<input type="text" id="add_word_input" class="input-input"/>
+		<button id="add_word_button" onclick="add_word_post()" class="input-button">submit</button>
+	</div>
+	<div class="content">
 	{% for word in word_list %}
 		{{ word }}<br />
 	{% endfor %}
+	</div>
+
+	<div class="hide">
+		{% csrf_token %}
+		<form method="post"></form>
+	</div>
 </body>
 </html>
