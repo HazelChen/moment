@@ -1,1 +1,4 @@
 *.log
+mysite/__pycache__/
+moment/__pycache__/
+moment/migrations/

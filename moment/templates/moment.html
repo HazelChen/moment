@@ -6,7 +6,7 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static "moment.css" %}">
 	<script type="text/javascript" src="{% static "jquery-3.1.1.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "moment.js" %}"></script>
+	<script type="text/javascript" src="{% static "moment.js" %}?v=2"></script>
     <title>时刻</title>
 </head>
 <body>
@@ -23,6 +23,7 @@
 	<div class="hide">
 		{% csrf_token %}
 		<form method="post"></form>
+		<input type="text" id="room" value="{{room}}" />
 	</div>
 </body>
 </html>

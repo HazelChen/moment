@@ -1,6 +1,8 @@
 #coding:utf-8
 from django.shortcuts import render
 from moment.models import Word
+from moment.models import Room
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 import logging
 import  json
@@ -8,24 +10,37 @@ import  json
 logger = logging.getLogger('views')
 
 def public(request):
-	return render(request, 'moment.html', {'word_list': Word.objects.order_by('-timestamp'), 'mode': 'public'})
+	room_id = request.GET.get('room')
+	if room_id == None:
+		room_id = 'default'
+
+	words = []
+	try:
+		room = Room.objects.get(identifition=room_id);
+	except Room.DoesNotExist:
+		room = None
+
+	if room != None:
+		words = room.word_set.all().order_by("-timestamp")
+
+	return render(request, 'moment.html', {'word_list': words, 'room': room_id})
 
 def add_word_public(request):
 	body_unicode = request.body.decode('utf-8')
 	body = json.loads(body_unicode)
 	word_input = body['word']
-	word = Word(room = 'default', word = word_input)
+	room_input = body['room']
+
+	try:
+		room = Room.objects.get(identifition = room_input);
+	except Room.DoesNotExist:
+		room = None
+
+	if room is None:
+		room = Room(identifition = room_input, duration = 300)
+		room.save()
+
+	word = Word(room = room, word = word_input)
 	word.save()
-	return HttpResponse()
-
-private_word_list = ['private']
-
-def private(request):
-	return render(request, 'moment.html', {'word_list': private_word_list, 'mode': 'private'})
-
-def add_word_private(request):
-	body_unicode = request.body.decode('utf-8')
-	body = json.loads(body_unicode)
-	word_input = body['word']
-	private_word_list.append(word_input)
+	room.word_set.add(word)
 	return HttpResponse()

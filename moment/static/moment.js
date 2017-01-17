@@ -1,9 +1,10 @@
 function add_word_post() {
-    	var value = $('#add_word_input').val();
+    	var word = $('#add_word_input').val();
+        var room = $('#room').val();
 
 		jQuery.ajax({
 			url: '/moment/add_word_public',
-			data: JSON.stringify({'word': value}),
+			data: JSON.stringify({'word': word, 'room': room}),
 			type: 'POST',
 			beforeSend: function(xhr, settings) {
         		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
